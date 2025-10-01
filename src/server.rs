@@ -1,20 +1,20 @@
-use std::net::SocketAddr;
+use crate::app::AppState;
+use crate::config::ServerConfig;
 use axum::extract::State;
 use axum::handler::Handler;
 use axum::Router;
 use config::Config;
+use std::net::SocketAddr;
 use tokio::net::TcpListener;
-use crate::app::AppState;
-use crate::config::ServerConfig;
 
 pub struct Server
 {
-    config: &'static Config,
+    config: &'static ServerConfig,
 }
 
 impl Server
 {
-    pub fn new(config: &'static Config) -> Self
+    pub fn new(config: &'static ServerConfig) -> Self
     {
         Self { config }
     }

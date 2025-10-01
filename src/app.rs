@@ -1,8 +1,8 @@
+use crate::config;
+use crate::{database, logger, server};
 use axum::Router;
 use sea_orm::DatabaseConnection;
 use tracing::log::logger;
-use crate::{logger, database, server};
-use crate::config;
 #[derive(Clone)]
 pub struct AppState
 {
