@@ -1,18 +1,21 @@
 use axum::response::{ IntoResponse, Response};
 use axum::http::StatusCode;
+use sea_orm::sqlx;
 use crate::response::ApiResponse;
 
 pub type ApiResult<T> = Result<T, ApiError>;
 #[derive(Debug, thiserror::Error)]
 pub enum ApiError
 {
-    #[error("Not found")]
+    #[error("服务器迷路了")]
     NotFound,
-    #[error("method not found")]
+    #[error("数据库异常: {0}")]
+    DatabaseError(#[from] sea_orm::DbErr),
+    #[error("请求方法不支持")]
     MethodNotAllowed,
     #[error("{0}")]
     Biz(String),
-    #[error("Internal server error")]
+    #[error("错误: {0}")]
     Internal(#[from] anyhow::Error),
 }
 
@@ -26,6 +29,7 @@ impl ApiError
             ApiError::MethodNotAllowed => StatusCode::METHOD_NOT_ALLOWED,
             ApiError::Biz(_) => StatusCode::OK,
             ApiError::Internal(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            ApiError::DatabaseError(_) => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 }

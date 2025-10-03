@@ -7,7 +7,7 @@ pub struct ApiResponse<T>
 {
     pub code: i32,
     pub msg: String,
-    #[serde(skip_serializing_if = "Option::is_some")]
+    // #[serde(skip_serializing_if = "Option::is_some")]
     pub data: Option<T>,
 }
 
