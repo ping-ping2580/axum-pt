@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-axum = { version = "0.8.4", features = ["macros"]}
+axum = { version = "0.8.6", features = ["macros"]}
 tokio = { version = "1.47.1", features = ['full'] }
 tracing = { version = "0.1.41", features = ["async-await"]}
 tracing-subscriber = { version = "0.3.20", features = ["env-filter", "chrono"]}
@@ -17,3 +17,8 @@ thiserror = "2.0.17"
 tower-http = { version = "0.6.6", features = ["trace", "timeout", "cors", "limit", "normalize-path"]}
 xid = "1.1.1"
 bytesize = "2.1.0"
+validator = { version = "0.20.0", features = ["derive"]}
+axum-valid = { version = "0.24.0", features = ["full_validator"]}
+regex = "1.11.3"
+idgenerator = "2.0.0"
+bcrypt = "0.17.1"

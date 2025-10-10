@@ -1,4 +1,4 @@
-use crate::config;
+use crate::{config, id};
 use crate::{database, logger, server};
 use axum::Router;
 use sea_orm::DatabaseConnection;
@@ -20,6 +20,7 @@ impl AppState
 pub async fn run(router: Router<AppState>) -> anyhow::Result<()>
 {
     logger::init();
+    id::init()?;
     tracing::info!("Starting app.server..");
 
     let db = database::init().await?;
