@@ -1,6 +1,6 @@
-use axum::extract::{FromRequestParts, State};
+use crate::app::error::ApiError;
+use axum::extract::FromRequestParts;
 use axum_valid::HasValidate;
-use crate::error::ApiError;
 
 #[derive(Debug, Clone, Copy, Default, FromRequestParts)]
 #[from_request(via(axum::extract::Query), rejection(ApiError))]

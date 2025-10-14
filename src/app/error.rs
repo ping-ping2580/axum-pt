@@ -1,9 +1,8 @@
+use crate::app::response::ApiResponse;
 use axum::extract::rejection::{JsonRejection, PathRejection, QueryRejection};
-use axum::response::{IntoResponse, Response};
 use axum::http::StatusCode;
+use axum::response::{IntoResponse, Response};
 use axum_valid::ValidRejection;
-use sea_orm::sqlx;
-use crate::response::ApiResponse;
 
 pub type ApiResult<T> = Result<T, ApiError>;
 #[derive(Debug, thiserror::Error)]
@@ -23,8 +22,12 @@ pub enum ApiError
     Json(#[from] JsonRejection),
     #[error("参数校验失败: {0}")]
     Validation(String),
+    #[error("JWT错误: {0}")]
+    JWT(#[from] jsonwebtoken::errors::Error),
     #[error("密码hash错误: {0}")]
     Bcrypt(#[from] bcrypt::BcryptError),
+    #[error("未授权: {0}")]
+    Unauthorized(String),
     #[error("{0}")]
     Biz(String),
     #[error("错误: {0}")]
@@ -52,6 +55,7 @@ impl ApiError
             ApiError::NotFound => StatusCode::NOT_FOUND,
             ApiError::MethodNotAllowed => StatusCode::METHOD_NOT_ALLOWED,
             ApiError::Biz(_) => StatusCode::OK,
+            ApiError::JWT(_) | ApiError::Unauthorized(_) => StatusCode::UNAUTHORIZED,
             ApiError::Internal(_) | ApiError::DatabaseError(_) |  ApiError::Bcrypt(_) => StatusCode::INTERNAL_SERVER_ERROR,
             ApiError::Query(_) | ApiError::Json(_) | ApiError::Path(_) | ApiError::Validation(_)=> StatusCode::BAD_REQUEST,
         }
@@ -66,5 +70,13 @@ impl IntoResponse for ApiError
         let body = axum::Json(ApiResponse::<()>::err(self.to_string()));
 
         (status_code, body).into_response()
+    }
+}
+
+impl From<ApiError> for Response
+{
+    fn from(value: ApiError) -> Self
+    {
+        value.into_response()
     }
 }

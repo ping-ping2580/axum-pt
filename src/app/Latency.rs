@@ -1,6 +1,6 @@
+use axum::http::Response;
 use std::fmt::{Display, Formatter};
 use std::time::Duration;
-use axum::http::Response;
 use tower_http::trace::OnResponse;
 use tracing::Span;
 
@@ -9,7 +9,7 @@ pub struct  LatencyOnResponse;
 
 impl<B> OnResponse<B> for LatencyOnResponse
 {
-    fn on_response(self, response: &Response<B>, latency: Duration, span: &Span)
+    fn on_response(self, response: &Response<B>, latency: Duration, _: &Span)
     {
         tracing::info!(
             latency = %Latency(latency),

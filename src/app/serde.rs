@@ -1,7 +1,7 @@
-use std::str::FromStr;
+use serde::de::Deserializer;
 use serde::Deserialize;
 use std::fmt::Display;
-use serde::de::Deserializer;
+use std::str::FromStr;
 
 #[derive(Debug, Deserialize)]
 #[serde(untagged)]

@@ -1,6 +1,6 @@
-use serde::{ Serialize, Deserialize };
+use crate::app::serde::deserialize_number;
+use serde::{Deserialize, Serialize};
 use validator::Validate;
-use crate::serde::deserialize_number;
 
 const DEFAULT_PAGE:u64 = 1;
 const DEFAULT_SIZE:u64 = 15;

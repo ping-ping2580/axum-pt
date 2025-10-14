@@ -1,8 +1,8 @@
 use crate::app::AppState;
 use crate::config::ServerConfig;
-use crate::Latency::LatencyOnResponse;
-use axum::extract::Request;
+use crate::app::latency::LatencyOnResponse;
 use axum::extract::DefaultBodyLimit;
+use axum::extract::Request;
 use axum::Router;
 use bytesize::ByteSize;
 use std::net::SocketAddr;
@@ -13,6 +13,7 @@ use tower_http::cors::CorsLayer;
 use tower_http::normalize_path::NormalizePathLayer;
 use tower_http::timeout::TimeoutLayer;
 use tower_http::trace::TraceLayer;
+use crate::app::auth::Principal;
 
 pub struct Server
 {
@@ -62,7 +63,14 @@ impl Server
                 let path = request.uri().path();
                 let id = xid::new();
 
-                tracing::info_span!("HTTP REQUEST",id = %id, method = %method, path = %path )
+                if let Some(principal) = request.extensions().get::<Principal>()
+                {
+                    tracing::info_span!("Api Request", id = %id, method = %method, path = %path, user_id = %principal.id, name = %principal.name)
+                }
+                else
+                {
+                    tracing::info_span!("Api Request",id = %id, method = %method, path = %path)
+                }
             })
             .on_request(())
             .on_failure(())
@@ -71,10 +79,10 @@ impl Server
         let normalize_path = NormalizePathLayer::trim_trailing_slash();//去掉路径末尾的斜线
 
         Router::new()
+            .layer(tracing)
             .merge(router)
             .layer(timeout)
             .layer(body_limit)
-            .layer(tracing)
             .layer(cors)
             .layer(normalize_path)
             .with_state(state)

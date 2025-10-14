@@ -1,5 +1,4 @@
-use axum::http::StatusCode;
-use axum::response::{ IntoResponse , Response};
+use axum::response::{IntoResponse, Response};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
