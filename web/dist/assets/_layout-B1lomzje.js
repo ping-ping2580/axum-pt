@@ -1,0 +1,1 @@
+import{SplitComponent$1 as e,init__layout as t}from"./vender-CQkPD_nF.js";import"./react-bf_5MNV1.js";t();export{e as component};

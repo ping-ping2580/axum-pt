@@ -1,0 +1,1 @@
+import{init_web as e}from"./vender-CQkPD_nF.js";import"./react-bf_5MNV1.js";e();
