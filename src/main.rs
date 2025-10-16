@@ -2,6 +2,7 @@ mod api;
 mod app;
 mod config;
 mod entity;
+mod web;
 // use axum::response::IntoResponse;
 // use sea_orm::prelude::*;
 

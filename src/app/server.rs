@@ -79,10 +79,10 @@ impl Server
         let normalize_path = NormalizePathLayer::trim_trailing_slash();//去掉路径末尾的斜线
 
         Router::new()
-            .layer(tracing)
             .merge(router)
             .layer(timeout)
             .layer(body_limit)
+            .layer(tracing)
             .layer(cors)
             .layer(normalize_path)
             .with_state(state)
