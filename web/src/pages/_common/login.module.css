@@ -1,20 +1,15 @@
 .login {
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   height: 100%;
-
   background: linear-gradient(45deg, transparent, var(--mantine-color-blue-0));
+}
 
-  .form {
-    width: rem(420);
-
-    padding: var(--mantine-spacing-xxl);
-
-    background-color: var(--mantine-color-white);
-    border-radius: var(--mantine-radius-lg);
-    box-shadow: var(--mantine-shadow-box-md);
-  }
+.form {
+  width: 420px;
+  padding: 40px;
+  background-color: var(--mantine-color-white);
+  border-radius: var(--mantine-radius-lg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 替换未定义的 shadow */
 }

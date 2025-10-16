@@ -2,7 +2,8 @@ import axios from "axios";
 
 import { useAppStore } from "../stores";
 
-export interface ApiResult<T> {
+export interface ApiResult<T>
+{
   code: number;
   message: string;
   data: T;
